@@ -106,24 +106,83 @@ app.use("/", (err, req, res, next) =>{
 });
 */
 
+app.use(express.json());
+
 app.post("/signup", async (req, res) => {
-    const user = new User({
-        firstName: "rohit",
-        lastName: "Kumar",
-        email: "raj02334@gmail.com",
-        password: "raj123",
-        age: 28,
-        gender: "male"
-    });
+
+    //creating a new instance of user model
+    // const user = new User({
+    //     firstName: "rohit",
+    //     lastName: "Kumar",
+    //     email: "raj02334@gmail.com",
+    //     password: "raj123",
+    //     age: 28,
+    //     gender: "male"
+    // });4
+
+    //creating dynamic user through api
+     const user = new User(req.body);
 
     try {
         await user.save();
-        res.status(201).send(user);
+        res.status(201).send("User added succesfully");
     } catch (e) {
         res.status(400).send(e);
     }
 });
 
+// get user by emailId
+app.get("/user", async (req,res) => {
+    const userEmail = req.body.email;
+
+    const user = await User.find({email: userEmail});
+    if(!user) {
+        res.status(404).find("user not find");
+    } else {
+        res.send(user);
+    }
+});
+
+// Feed API -get all the user from database
+app.get("/feed", async (req, res) =>{
+    
+    try {
+        const users = await User.find({});
+        res.send(users);
+    }
+    catch (err) {
+        res.status(400).send("something went wrong");
+    }
+
+});
+
+// delete user from DB
+app.delete("/user", async (req,res) => {
+    const userId = req.body.userId;
+
+    try {
+        const user = await User.findByIdAndDelete(userId);
+        res.send("user deleted suscessfully");
+    }
+    catch (err) {
+        res.status(400).send("something went wrong");
+    }
+});
+
+// update data of the user
+app.patch("/user", async (req,res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+
+    try {
+        await User.findByIdAndUpdate({_id: userId}, data);
+        res.send("user updated sucessfully");
+    }
+    catch (err) {
+        res.status(400).send("something went wrong");
+    }
+
+})
 
 
 
@@ -143,3 +202,4 @@ connectDB()
 
 
 module.exports = app;
+
