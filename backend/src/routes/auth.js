@@ -4,6 +4,13 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { validateSignUpData } = require('../utils/validation');
 
+const cookieOptions = {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 1000,
+};
+
 // Sign Up Route
 authRouter.post("/signup", async (req, res) => {
 
@@ -22,7 +29,7 @@ authRouter.post("/signup", async (req, res) => {
         await user.save();
 
         const token = await user.getJWT();
-        res.cookie("token", token, { httpOnly: true });
+        res.cookie("token", token, cookieOptions);
 
         const safeUser = user.toObject();
         delete safeUser.password;
@@ -56,7 +63,7 @@ authRouter.post("/login", async (req, res) => {
 
         const token = await user.getJWT();
 
-        res.cookie("token", token, { httpOnly: true });
+        res.cookie("token", token, cookieOptions);
 
         const safeUser = user.toObject();
         delete safeUser.password;
@@ -75,7 +82,7 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.post("/logout", (req, res) => {
-    res.clearCookie("token");
+    res.clearCookie("token", cookieOptions);
     res.json({ success: true, message: "Logout successfully" });
 });
 

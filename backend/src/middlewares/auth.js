@@ -5,8 +5,11 @@ const User = require("../models/user");
 
 const adminAuth = (req, res, next) => {
     console.log("Admin Auth is getting checked!")
-    const token = "xyz";
-    const isAdminAuthorized = token === "xyz";
+    const token = req.headers["x-admin-token"];
+    const isAdminAuthorized =
+        Boolean(token) &&
+        Boolean(process.env.ADMIN_TOKEN) &&
+        token === process.env.ADMIN_TOKEN;
     if (!isAdminAuthorized) {
         res.status(401).send("Unauthorized request");
     } else {
@@ -20,7 +23,10 @@ const userAuth = async (req, res, next) => {
         if (!token) {
             throw new Error("Token not found");
         }
-        const decode = await jsonwebtoken.verify(token, "DEVTINDERSECRETKEY");
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET is not configured");
+        }
+        const decode = await jsonwebtoken.verify(token, process.env.JWT_SECRET);
         const userId = decode._id;
         const user = await User.findById(userId).select("-password");
         if (!user) {
@@ -29,7 +35,7 @@ const userAuth = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).send("Unauthorized request" + error.message);
+        res.status(401).send("Unauthorized request");
     } 
 
 };

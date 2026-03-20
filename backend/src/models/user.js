@@ -80,7 +80,10 @@ const userSchema = new mongoose.Schema(
 
 userSchema.methods.getJWT = async function () {
   const user = this;
-  const token = await jsonwebtoken.sign({ _id: user._id }, "DEVTINDERSECRETKEY", {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not configured");
+  }
+  const token = await jsonwebtoken.sign({ _id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
   return token;

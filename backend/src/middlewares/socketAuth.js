@@ -8,7 +8,11 @@ const socketAuth = async (socket, next) => {
             return next(new Error('Authentication error: Token not found'));
         }
 
-        const decoded = jwt.verify(token, 'DEVTINDERSECRETKEY');
+        if (!process.env.JWT_SECRET) {
+            return next(new Error('Authentication error: JWT secret is not configured'));
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded._id);
         if (!user) {
             return next(new Error('Authentication error: User not found'));
