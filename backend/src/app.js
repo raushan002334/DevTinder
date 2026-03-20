@@ -41,11 +41,11 @@ app.use(
 );
 
 // Routers
-app.use("/", authRouter);
-app.use("/", profileRouter);
-app.use("/", requestRouter);
-app.use("/", userRouter);
-app.use("/", chatRouter);
+app.use("/api", authRouter);
+app.use("/api", profileRouter);
+app.use("/api", requestRouter);
+app.use("/api", userRouter);
+app.use("/api", chatRouter);
 
 
 // Socket.IO - Real-time chat

@@ -23,7 +23,7 @@ const Body = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/profile/view`, {
+        const res = await axios.get(`${BASE_URL}/api/profile/view`, {
           withCredentials: true,
         })
         dispatch(addUser(res.data))

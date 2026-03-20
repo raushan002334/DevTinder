@@ -42,7 +42,7 @@ const Connections = () => {
     const fetchConnections = async () => {
       try {
         setLoading(true)
-        const res = await axios.get(`${BASE_URL}/user/connections`, {
+        const res = await axios.get(`${BASE_URL}/api/user/connections`, {
           withCredentials: true,
         })
         dispatch(setConnections({ items: res.data.connections || [], ownerId: userId }))

@@ -55,7 +55,7 @@ const EditProfile = () => {
           .filter(Boolean),
       }
 
-      const res = await axios.patch(`${BASE_URL}/profile/edit`, payload, {
+      const res = await axios.patch(`${BASE_URL}/api/profile/edit`, payload, {
         withCredentials: true,
       })
 

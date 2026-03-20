@@ -30,7 +30,7 @@ const UserCard = ({ user }) => {
 
     try {
       await axios.post(
-        `${BASE_URL}/request/send/${status}/${toUserId}`,
+        `${BASE_URL}/api/request/send/${status}/${toUserId}`,
         {},
         { withCredentials: true },
       )

@@ -41,7 +41,7 @@ const Login = () => {
     setError('')
     setLoading(true)
     try {
-      const endpoint = isLoginForm ? '/login' : '/signup'
+      const endpoint = isLoginForm ? '/api/login' : '/api/signup'
       const payload = isLoginForm
         ? { emailId: formData.emailId, password: formData.password }
         : formData

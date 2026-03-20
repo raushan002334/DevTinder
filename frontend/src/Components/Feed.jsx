@@ -22,7 +22,7 @@ const Feed = () => {
     try {
       setLoading(true)
       setError('')
-      const res = await axios.get(`${BASE_URL}/user/feed`, {
+      const res = await axios.get(`${BASE_URL}/api/user/feed`, {
         withCredentials: true,
       })
       dispatch(addFeed({ items: res.data.users || [], ownerId: userId }))

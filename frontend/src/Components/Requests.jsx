@@ -43,7 +43,7 @@ const Requests = () => {
       try {
         setError('')
         setLoading(true)
-        const res = await axios.get(`${BASE_URL}/user/requests/received`, {
+        const res = await axios.get(`${BASE_URL}/api/user/requests/received`, {
           withCredentials: true,
         })
         dispatch(setRequests({ items: res.data.connectionRequests || [], ownerId: userId }))
@@ -68,7 +68,7 @@ const Requests = () => {
   const reviewRequest = async (status, requestId) => {
     try {
       await axios.post(
-        `${BASE_URL}/request/review/${status}/${requestId}`,
+        `${BASE_URL}/api/request/review/${status}/${requestId}`,
         {},
         { withCredentials: true },
       )
