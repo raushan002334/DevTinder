@@ -5,7 +5,9 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const app = express();
 const server = http.createServer(app);
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(",").map((origin) => origin.trim()).filter(Boolean)
+    : ["http://localhost:5173", "http://localhost:5174"];
 const io = new Server(server, {
     cors: {
         origin: allowedOrigins,

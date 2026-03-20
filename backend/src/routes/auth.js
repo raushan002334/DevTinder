@@ -3,11 +3,12 @@ const authRouter = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { validateSignUpData } = require('../utils/validation');
+const isProduction = process.env.NODE_ENV === "production";
 
 const cookieOptions = {
     httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
     maxAge: 60 * 60 * 1000,
 };
 
